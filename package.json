@@ -1,0 +1,19 @@
+{
+  "name": "sashimi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node -r esm index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "chance": "^1.1.4",
+    "date-fns": "^2.11.0",
+    "esm": "^3.2.25"
+  }
+}
