@@ -1,4 +1,4 @@
-let titles = [
+const titles = [
   {
     'title': 'Nature',
     'issn': '0028-0836',

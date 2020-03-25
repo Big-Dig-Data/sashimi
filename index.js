@@ -1,6 +1,7 @@
-//'use strict';
+'use strict';
 
-import {createReportData} from './reports'
+import { createReportData } from './reports'
+import parseISO from 'date-fns/parseISO'
 
 const Hapi = require('@hapi/hapi');
 
@@ -15,10 +16,9 @@ const init = async () => {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            let monthStart = '2020-01'
-            let monthEnd = '2020-02'
-            let report = createReportData(monthStart, monthEnd)
-            return report
+            let monthStart = 'begin_date' in request.query ? request.query.begin_date : '2020-01'
+            let monthEnd = 'end_date' in request.query ? request.query.end_date : '2020-01'
+            return createReportData(monthStart, monthEnd)
         }
     });
 
@@ -32,7 +32,6 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
 });
 
-import parseISO from 'date-fns/parseISO'
 console.log(parseISO('2020-01'))
 
 init();

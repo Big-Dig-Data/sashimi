@@ -57,34 +57,39 @@ function createPerformance (month) {
 }
 
 
+function createOneRecord (title, month) {
+  let record = {
+    "Title": title.title,
+    "Publisher": "Hogwarts publishing house",
+    "Section_Type": "Article",
+    "Platform": "Hogwarts manuscript collection",
+    "Data_Type": "Journal",
+    // "YOP": "2006",
+    "Access_Type": "Controlled",
+    "Access_Method": "Regular",
+    "Item_ID": []
+  }
+  if ('eissn' in title) {
+    record['Item_ID'].push({"Type": "Online_ISSN", "Value": title.eissn})
+  }
+  if ('issn' in title) {
+    record['Item_ID'].push({"Type": "Print_ISSN", "Value": title.issn})
+  }
+  record['Performance'] = createPerformance(month)
+  return record
+}
+
+
 function createTitleData (monthStart, monthEnd) {
   let records = []
   for (let title of titles) {
-    let record = {
-      "Title": title.title,
-      "Publisher": "Oxford University Press",
-      "Section_Type": "Article",
-      "Platform": "Oxford Academic",
-      "Data_Type": "Journal",
-      "YOP": "2006",
-      "Access_Type": "Controlled",
-      "Access_Method": "Regular",
-      "Item_ID": []
-    }
-    if ('eissn' in title) {
-      record['Item_ID'].push({"Type": "Online_ISSN", "Value": title.eissn})
-    }
-    if ('issn' in title) {
-      record['Item_ID'].push({"Type": "Print_ISSN", "Value": title.issn})
-    }
-    record['Performance'] = createPerformance(monthStart)
+    let record = createOneRecord(title, monthStart)
     records.push(record)
   }
   return records
 }
 
 function createReportData (monthStart, monthEnd) {
-
   return {
     'Report_Header': reportHeader(monthStart, monthEnd),
     'Report_Items': createTitleData(monthStart, monthEnd),
