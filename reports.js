@@ -41,6 +41,7 @@ function createPerformance (month, seedArray=[], index=1) {
     "Total_Item_Requests",
     "Unique_Item_Investigations",
     "Unique_Item_Requests",
+    "No_License",
   ]
 
   let monthDate = parseDateTime(month+'-15')
