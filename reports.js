@@ -4,12 +4,12 @@ import {titles} from './titles'
 import {possibleValues} from './dimensions'
 
 
-function reportHeader (monthStart, monthEnd) {
+function reportHeader (monthStart, monthEnd, customerId) {
   let now = new Date()
   return {
     "Created": isoDateTimeFormatT(now),
     "Created_By": "Sashimi fake SUSHI generator",
-    "Customer_ID": "123456",
+    "Customer_ID": customerId,
     "Report_ID": "TR",
     "Release": "5",
     "Report_Name": "Title Master Report",
@@ -118,9 +118,9 @@ function createTitleData (monthStart, monthEnd, seedArray=[]) {
   return records
 }
 
-function createReportData (monthStart, monthEnd, seedArray=[]) {
+function createReportData (monthStart, monthEnd, customerId, seedArray=[]) {
   return {
-    'Report_Header': reportHeader(monthStart, monthEnd),
+    'Report_Header': reportHeader(monthStart, monthEnd, customerId),
     'Report_Items': createTitleData(monthStart, monthEnd, [...seedArray]),
   }
 }

@@ -21,7 +21,7 @@ const init = async () => {
             let monthEnd = 'end_date' in request.query ? request.query.end_date : monthStart
             let requestorId = 'requestor_id' in request.query ? request.query.requestor_id : ''
             let customerId = 'customer_id' in request.query ? request.query.customer_id : ''
-            return createReportData(monthStart, monthEnd, [requestorId, customerId])
+            return createReportData(monthStart, monthEnd, customerId, [requestorId, customerId])
         }
     });
 
