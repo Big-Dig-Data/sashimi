@@ -1,6 +1,7 @@
 import {isoDateTimeFormatT, endOfMonthStr, startOfMonthStr, parseDateTime} from './dates'
 import {randomCount} from './random'
 import {titles} from './titles'
+import {possibleValues} from './dimensions'
 
 
 function reportHeader (monthStart, monthEnd) {
@@ -34,7 +35,7 @@ function reportHeader (monthStart, monthEnd) {
   }
 }
 
-function createPerformance (month) {
+function createPerformance (month, seedArray=[]) {
   let metrics = [
     "Total_Item_Investigations",
     "Total_Item_Requests",
@@ -43,7 +44,9 @@ function createPerformance (month) {
   ]
 
   let monthDate = parseDateTime(month+'-15')
-  let instance = metrics.map(metric => {return {'Metric_Type': metric, 'Count': randomCount()}})
+  let instance = metrics.map(metric => {
+    return {'Metric_Type': metric, 'Count': randomCount([month, metric, ...seedArray])}
+  })
 
   return [
         {
@@ -57,16 +60,18 @@ function createPerformance (month) {
 }
 
 
-function createOneRecord (title, month) {
+function createOneRecord (title, month, params, seedArray=[]) {
+  /*
+  * seedArray is used to provide a seed to the random number generator and thus return the same
+  * random data for the same input every time
+  * */
   let record = {
     "Title": title.title,
     "Publisher": "Hogwarts publishing house",
     "Section_Type": "Article",
     "Platform": "Hogwarts manuscript collection",
     "Data_Type": "Journal",
-    // "YOP": "2006",
-    "Access_Type": "Controlled",
-    "Access_Method": "Regular",
+    ...params,
     "Item_ID": []
   }
   if ('eissn' in title) {
@@ -75,24 +80,37 @@ function createOneRecord (title, month) {
   if ('issn' in title) {
     record['Item_ID'].push({"Type": "Print_ISSN", "Value": title.issn})
   }
-  record['Performance'] = createPerformance(month)
+  record['Performance'] = createPerformance(
+    month,
+    [title.title, ...Object.values(params), ...seedArray]
+  )
   return record
 }
 
 
-function createTitleData (monthStart, monthEnd) {
+function createTitleData (monthStart, monthEnd, seedArray=[]) {
   let records = []
   for (let title of titles) {
-    let record = createOneRecord(title, monthStart)
-    records.push(record)
+    for (let accessType of possibleValues.Access_Type) {
+      for (let accessMethod of possibleValues.Access_Method) {
+        let record = createOneRecord(
+          title,
+          monthStart,
+          {'Access_Type': accessType, 'Access_Method': accessMethod},
+          seedArray,
+          )
+        records.push(record)
+      }
+    }
   }
   return records
 }
 
-function createReportData (monthStart, monthEnd) {
+function createReportData (monthStart, monthEnd, seedArray=[]) {
+  console.log(seedArray)
   return {
     'Report_Header': reportHeader(monthStart, monthEnd),
-    'Report_Items': createTitleData(monthStart, monthEnd),
+    'Report_Items': createTitleData(monthStart, monthEnd, [...seedArray]),
   }
 }
 

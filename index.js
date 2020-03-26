@@ -14,11 +14,13 @@ const init = async () => {
 
     server.route({
         method: 'GET',
-        path: '/',
+        path: '/reports/tr',
         handler: (request, h) => {
             let monthStart = 'begin_date' in request.query ? request.query.begin_date : '2020-01'
-            let monthEnd = 'end_date' in request.query ? request.query.end_date : '2020-01'
-            return createReportData(monthStart, monthEnd)
+            let monthEnd = 'end_date' in request.query ? request.query.end_date : monthStart
+            let requestorId = 'requestor_id' in request.query ? request.query.requestor_id : ''
+            let customerId = 'customer_id' in request.query ? request.query.customer_id : ''
+            return createReportData(monthStart, monthEnd, [requestorId, customerId])
         }
     });
 
@@ -31,7 +33,5 @@ process.on('unhandledRejection', (err) => {
     console.log(err);
     process.exit(1);
 });
-
-console.log(parseISO('2020-01'))
 
 init();
