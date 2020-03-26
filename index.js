@@ -16,6 +16,7 @@ const init = async () => {
         method: 'GET',
         path: '/reports/tr',
         handler: (request, h) => {
+            console.info('New request', request.query)
             let monthStart = 'begin_date' in request.query ? request.query.begin_date : '2020-01'
             let monthEnd = 'end_date' in request.query ? request.query.end_date : monthStart
             let requestorId = 'requestor_id' in request.query ? request.query.requestor_id : ''

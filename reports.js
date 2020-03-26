@@ -45,10 +45,10 @@ function createPerformance (month, seedArray=[], index=1) {
   ]
 
   let monthDate = parseDateTime(month+'-15')
-  let instance = metrics.map(metric => {
+  let instance = metrics.map((metric, idx) => {
     return {
       'Metric_Type': metric,
-      'Count': randomCount([month, metric, ...seedArray], index)
+      'Count': randomCount([month, metric, ...seedArray], (idx+1)*index)
     }
   })
 
@@ -119,7 +119,6 @@ function createTitleData (monthStart, monthEnd, seedArray=[]) {
 }
 
 function createReportData (monthStart, monthEnd, seedArray=[]) {
-  console.log(seedArray)
   return {
     'Report_Header': reportHeader(monthStart, monthEnd),
     'Report_Items': createTitleData(monthStart, monthEnd, [...seedArray]),
