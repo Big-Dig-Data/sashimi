@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "WTFPL",
   "dependencies": {
     "@hapi/hapi": "^19.1.1",
     "chance": "^1.1.4",
