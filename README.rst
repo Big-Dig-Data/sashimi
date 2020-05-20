@@ -6,7 +6,7 @@ Sashimi is a fake SUSHI provider and COUNTER 5 generator. It acts as a server ex
 limited but useful part of the SUSHI API.
 
 You can use Sashimi to generate random data to test your SUSHI client. This is how we
-use as Big Dig Data - as a source of data for `Celus <https://www.celus.net/>`_ online demo.
+use at Big Dig Data - as a source of data for `Celus <https://www.celus.net/>`_ online demo.
 
 
 Installation
@@ -64,7 +64,7 @@ Limitations
 * only supports TR master report
 * does not support YOP
 * data are not internally consistent - e.g. you can have more Requests than Investigations, which
-  should not happen in real world
+  should not happen in the real world
 * ``customer_id`` and ``requestor_id`` are not used for authentication - the system will happily
   generate data for anybody :)
 
