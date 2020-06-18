@@ -118,6 +118,85 @@ const titles = [
   }
   ]
 
+let databases = [
+  {
+    'title': "Scopus"
+  },
+  {
+    'title': "Library, Information Science & Technology Abstracts"
+  },
+  {
+    'title': "ProQuest Central"
+  },
+  {
+    'title': "Art Index Retrospective (H.W. Wilson)"
+  },
+  {
+    'title': "Newswires"
+  },
+  {
+    'title': "European Views of the Americas: 1493 to 1750"
+  },
+  {
+    'title': "RILM Abstracts of Music Literature (1967 to present)"
+  },
+  {
+    'title': "Ebook Central"
+  },
+  {
+    'title': "Audiobook Collection (EBSCOhost)"
+  },
+  {
+    'title': "L'Année philologique"
+  },
+  {
+    'title': "Associated Press Video"
+  },
+  {
+    'title': "RILM Abstracts of Music Literature with Full Text"
+  },
+  {
+    'title': "MathSciNet via EBSCOhost"
+  },
+  {
+    'title': "ProQuest Natural Science Collection"
+  },
+  {
+    'title': "ProQuest Technology Collection"
+  },
+  {
+    'title': "OpenDissertations"
+  },
+  {
+    'title': "Hospital Premium Collection"
+  },
+  {
+    'title': "Literature Online"
+  },
+  {
+    'title': "Philosopher's Index"
+  },
+  {
+    'title': "Screen Studies Collection"
+  },
+  {
+    'title': "Academic Video Online"
+  },
+  {
+    'title': "Coronavirus Research Database"
+  },
+  {
+    'title': "RILM Abstracts of Music Literature"
+  },
+  {
+    'title': "Business and Economics Video Collection"
+  },
+  {
+    'title': "RILM Music Encyclopedias"
+  },
+]
+
 export {
-  titles
+  titles,
+  databases,
 }

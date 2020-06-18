@@ -48,20 +48,24 @@ customer_id
   The standard SUSHI ``customer_id`` argument.
 
 
+You can also use the `http://localhost:3000/reports/dr` endpoint to get a fake Database report.
+The URL attributes to use are the same as for the TR report.
+
+
 Features
 ========
 
-* uses real journal names when generating reports
+* uses real journal and database names when generating reports
 * data are pseudo-randomly generated - data are random, but the same input always results in the
   same output
-* mimics the usually observed distribution of hits where a few journals have high interest and
-  others not so much
+* mimics the usually observed distribution of hits where a few journals/databases have high
+  interest and others not so much
 
 
 Limitations
 ===========
 
-* only supports TR master report
+* only supports TR and DR master reports
 * does not support YOP
 * data are not internally consistent - e.g. you can have more Requests than Investigations, which
   should not happen in the real world
