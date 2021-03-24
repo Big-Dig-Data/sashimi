@@ -43,8 +43,12 @@ function createPerformance (month, seedArray=[], index=1) {
     "Unique_Item_Requests",
     "No_License",
   ]
-
-  let monthDate = parseDateTime(month+'-15')
+  let monthDate;
+  if ((month.match(/-/g) || []).length === 1) {
+    monthDate = parseDateTime(month + '-15')
+  } else {
+    monthDate = parseDateTime(month)
+  }
   let instance = metrics.map((metric, idx) => {
     return {
       'Metric_Type': metric,
