@@ -1,16 +1,20 @@
 'use strict'
 
+require("dotenv").config();
 import { createReportData as createReportDataTR } from './tr'
 import { createReportData as createReportDataDR } from './dr'
 
 const Hapi = require('@hapi/hapi')
 
+const serverName = process.env.SERVER_NAME || 'localhost'
+const port = process.env.PORT || 3000
+
 const init = async () => {
 
     const server = Hapi.server({
-        port: 3000,
-        host: 'localhost'
-    })
+        port: port,
+        host: serverName,
+    });
 
     server.route({
         method: 'GET',
