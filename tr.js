@@ -21,6 +21,8 @@ class ReportGeneratorTR extends BaseReportGenerator {
     },
   ];
 
+  titleAttr = "Title";
+
   recordBase = {
     Title: "",
     Publisher: "Sashimi publishing house",

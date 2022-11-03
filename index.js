@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 import { ReportGeneratorTR } from "./tr";
-import { createReportData as createReportDataDR } from "./dr";
+import { ReportGeneratorDR } from "./dr";
 
 const Hapi = require("@hapi/hapi");
 
@@ -20,6 +20,14 @@ function queryToContextObj(query) {
   };
 }
 
+function handleRequest(query, generatorClass) {
+  let monthStart = query.begin_date || "2020-01";
+  let monthEnd = query.end_date || monthStart;
+  let context = queryToContextObj(query);
+  let generator = new generatorClass(context);
+  return generator.createReportData(monthStart, monthEnd, context);
+}
+
 const init = async () => {
   const server = Hapi.server({
     port: port,
@@ -31,11 +39,7 @@ const init = async () => {
     path: "/reports/tr",
     handler: (request, h) => {
       console.info("New TR request", request.query);
-      let context = queryToContextObj(request.query);
-      let monthStart = request.query.begin_date || "2020-01";
-      let monthEnd = request.query.end_date || monthStart;
-      let generator = new ReportGeneratorTR(context);
-      return generator.createReportData(monthStart, monthEnd);
+      return handleRequest(request.query, ReportGeneratorTR);
     },
   });
 
@@ -44,10 +48,7 @@ const init = async () => {
     path: "/reports/dr",
     handler: (request, h) => {
       console.info("New DR request", request.query);
-      let monthStart = request.query.begin_date || "2020-01";
-      let monthEnd = request.query.end_date || monthStart;
-      let context = queryToContextObj(request.query);
-      return createReportDataDR(monthStart, monthEnd, context);
+      return handleRequest(request.query, ReportGeneratorDR);
     },
   });
 

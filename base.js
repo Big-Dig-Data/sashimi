@@ -17,6 +17,8 @@ class BaseReportGenerator {
 
   recordBase = {};
 
+  titleAttr = "X";
+
   constructor(context) {
     this.context = context;
   }
@@ -84,7 +86,7 @@ class BaseReportGenerator {
      * */
     let record = {
       ...this.recordBase,
-      Title: title.title,
+      [this.titleAttr]: title.title,
       Platform: this.context.platform,
       ...params,
     };
