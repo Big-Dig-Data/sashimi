@@ -4,6 +4,14 @@ import { databases, titles } from "./titles";
 function randomUsageCount(seedArray, context) {
   const scale = randomUsageScale(context);
   let chance = new Chance(...seedArray);
+  console.debug(
+    "Scale:",
+    scale,
+    "Random seed for seedArray",
+    seedArray,
+    "is",
+    chance.seed
+  );
   return chance.integer({ min: Math.round(scale / 4), max: scale });
 }
 

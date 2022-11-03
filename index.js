@@ -1,7 +1,7 @@
 "use strict";
 
 require("dotenv").config();
-import { createReportData as createReportDataTR } from "./tr";
+import { ReportGenerator as ReportGeneratorTR } from "./tr";
 import { createReportData as createReportDataDR } from "./dr";
 
 const Hapi = require("@hapi/hapi");
@@ -34,7 +34,8 @@ const init = async () => {
       let context = queryToContextObj(request.query);
       let monthStart = request.query.begin_date || "2020-01";
       let monthEnd = request.query.end_date || monthStart;
-      return createReportDataTR(monthStart, monthEnd, context);
+      let generator = new ReportGeneratorTR(context);
+      return generator.createReportData(monthStart, monthEnd);
     },
   });
 
