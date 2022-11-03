@@ -110,7 +110,7 @@ class BaseReportGenerator {
 
   createTitleData(monthStart, monthEnd) {
     let records = [];
-    const titleSubset = randomTitles(this.context);
+    const titleSubset = randomTitles(this.context, monthStart);
     let titleIdx = 0;
     let totalTitles = titleSubset.length;
     for (let title of titleSubset) {
