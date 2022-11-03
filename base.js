@@ -90,11 +90,15 @@ class BaseReportGenerator {
       Platform: this.context.platform,
       ...params,
     };
-    if ("eissn" in title && record.Item_ID) {
-      record["Item_ID"].push({ Type: "Online_ISSN", Value: title.eissn });
-    }
-    if ("issn" in title && record.Item_ID) {
-      record["Item_ID"].push({ Type: "Print_ISSN", Value: title.issn });
+    if (record.Item_ID) {
+      // create new array to avoid modifying the original
+      record.Item_ID = [];
+      if ("eissn" in title) {
+        record["Item_ID"].push({ Type: "Online_ISSN", Value: title.eissn });
+      }
+      if ("issn" in title) {
+        record["Item_ID"].push({ Type: "Print_ISSN", Value: title.issn });
+      }
     }
     record["Performance"] = this.createPerformance(
       month,
