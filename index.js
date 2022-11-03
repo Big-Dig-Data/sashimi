@@ -1,7 +1,7 @@
 "use strict";
 
 require("dotenv").config();
-import { ReportGenerator as ReportGeneratorTR } from "./tr";
+import { ReportGeneratorTR } from "./tr";
 import { createReportData as createReportDataDR } from "./dr";
 
 const Hapi = require("@hapi/hapi");
