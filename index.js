@@ -1,8 +1,8 @@
 "use strict";
 
 require("dotenv").config();
-import { ReportGeneratorTR } from "./tr";
-import { ReportGeneratorDR } from "./dr";
+import { ReportGeneratorR50TR } from "./r50/tr";
+import { ReportGeneratorR50DR } from "./r50/dr";
 
 const Hapi = require("@hapi/hapi");
 
@@ -39,7 +39,7 @@ const init = async () => {
     path: "/reports/tr",
     handler: (request, h) => {
       console.info("New TR request", request.query);
-      return handleRequest(request.query, ReportGeneratorTR);
+      return handleRequest(request.query, ReportGeneratorR50TR);
     },
   });
 
@@ -48,7 +48,7 @@ const init = async () => {
     path: "/reports/dr",
     handler: (request, h) => {
       console.info("New DR request", request.query);
-      return handleRequest(request.query, ReportGeneratorDR);
+      return handleRequest(request.query, ReportGeneratorR50DR);
     },
   });
 

@@ -1,15 +1,8 @@
-import {
-  isoDateTimeFormatT,
-  endOfMonthStr,
-  startOfMonthStr,
-  parseDateTime,
-} from "./dates";
-import { randomDatabases, randomUsageCount } from "./random";
-import { databases } from "./titles";
+import { randomDatabases } from "../lib/random";
 import { possibleValues } from "./dimensions";
-import { BaseReportGenerator } from "./base";
+import { BaseReportGeneratorR50 } from "./base";
 
-class ReportGeneratorDR extends BaseReportGenerator {
+class ReportGeneratorR50DR extends BaseReportGeneratorR50 {
   reportId = "DR";
 
   reportName = "Database Master Report";
@@ -44,6 +37,10 @@ class ReportGeneratorDR extends BaseReportGenerator {
     Data_Type: "Database",
   };
 
+  createTitleList(monthStart) {
+    return randomDatabases(this.context, monthStart);
+  }
+
   *generateParams() {
     for (let accessMethod of possibleValues.Access_Method) {
       yield [
@@ -56,4 +53,4 @@ class ReportGeneratorDR extends BaseReportGenerator {
   }
 }
 
-export { ReportGeneratorDR };
+export { ReportGeneratorR50DR };

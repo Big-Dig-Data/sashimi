@@ -1,7 +1,7 @@
 import { possibleValues } from "./dimensions";
-import { BaseReportGenerator } from "./base";
+import { BaseReportGeneratorR50 } from "./base";
 
-class ReportGeneratorTR extends BaseReportGenerator {
+class ReportGeneratorR50TR extends BaseReportGeneratorR50 {
   reportId = "TR";
 
   reportName = "Title Master Report";
@@ -47,4 +47,4 @@ class ReportGeneratorTR extends BaseReportGenerator {
   }
 }
 
-export { ReportGeneratorTR };
+export { ReportGeneratorR50TR };

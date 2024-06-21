@@ -3,10 +3,10 @@ import {
   isoDateTimeFormatT,
   parseDateTime,
   startOfMonthStr,
-} from "./dates";
-import { randomTitles, randomUsageCount } from "./random";
+} from "../lib/dates";
+import { randomTitles, randomUsageCount } from "../lib/random";
 
-class BaseReportGenerator {
+class BaseReportGeneratorR50 {
   reportId = "FOO";
 
   reportName = "Foo Report";
@@ -112,9 +112,13 @@ class BaseReportGenerator {
     // should return array of [params, weight] pairs
   }
 
+  createTitleList(monthStart) {
+    return randomTitles(this.context, monthStart);
+  }
+
   createTitleData(monthStart, monthEnd) {
     let records = [];
-    const titleSubset = randomTitles(this.context, monthStart);
+    const titleSubset = this.createTitleList(monthStart);
     let titleIdx = 0;
     let totalTitles = titleSubset.length;
     for (let title of titleSubset) {
@@ -141,4 +145,4 @@ class BaseReportGenerator {
   }
 }
 
-export { BaseReportGenerator };
+export { BaseReportGeneratorR50 };
