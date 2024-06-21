@@ -2,8 +2,8 @@
 Sashimi
 =======
 
-Sashimi is a fake SUSHI provider and COUNTER 5 generator. It acts as a server exposing a very
-limited but useful part of the SUSHI API.
+Sashimi is a fake SUSHI provider and COUNTER 5.0 / 5.1 report generator. It acts as a server
+exposing a very limited but useful part of the SUSHI API.
 
 You can use Sashimi to generate random data to test your SUSHI client. This is how we
 use at Big Dig Data - as a source of data for `Celus <https://www.celus.net/>`_ online demo.
@@ -13,7 +13,7 @@ Installation
 ============
 
 Sashimi is written in JavaScript to run under Node.js. Therefore you need to install Node.js
-(we recommend version 12.16 or above).
+(we recommend version 16 or above).
 
 Before running Sashimi for the first time, you need to install the required packages by running::
 
@@ -29,11 +29,16 @@ You can start Sashimi using the following command from the Sashimi directory::
 
     npm run start
 
-Sashimi will start to listen on a local address using the port 3000. If the port is not available,
+Sashimi will start to listen on a local address using port 3000. If the port is not available,
 an error message will be shown.
 
-After Sashimi starts, you can use the address `http://localhost:3000/reports/tr` to get sample
-SUSHI report. You can use the following arguments to influence the generated data:
+After Sashimi starts, you can use the address `http://localhost:3000/reports/tr` or
+`http://localhost:3000/reports/dr` to get sample SUSHI report for COUNTER 5.0.
+
+If you want to use COUNTER 5.1, you can use the address `http://localhost:3000/r51/reports/tr` or
+`http://localhost:3000/r51/reports/dr`.
+
+You can use the following arguments to influence the generated data:
 
 begin_date
   The standard SUSHI ``begin_date`` argument. If not given, a default value will be used
@@ -48,10 +53,6 @@ customer_id
   The standard SUSHI ``customer_id`` argument.
 
 
-You can also use the `http://localhost:3000/reports/dr` endpoint to get a fake Database report.
-The URL attributes to use are the same as for the TR report.
-
-
 Features
 ========
 
@@ -60,6 +61,7 @@ Features
   same output
 * mimics the usually observed distribution of hits where a few journals/databases have high
   interest and others not so much
+* supports both COUNTER 5.0 and 5.1 compatible interfaces (5.1 support under the `/r51/` path)
 
 
 Limitations
@@ -71,6 +73,8 @@ Limitations
   should not happen in the real world
 * ``customer_id`` and ``requestor_id`` are not used for authentication - the system will happily
   generate data for anybody :)
+* the generator for CoP 5.0 only generates data for the first month if more than one month is
+  requested (this limitation does not apply to CoP 5.1)
 
 
 Bugs and suggestions

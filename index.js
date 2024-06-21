@@ -102,7 +102,8 @@ const init = async () => {
       return {
         message:
           'This is a fake SUSHI server "sashimi". Use /reports/tr or /reports/dr to ' +
-          "get sample data. Read more at https://github.com/Big-Dig-Data/sashimi",
+          "get sample data for CoP 5.0 reports, or /r51/reports/tr and /r51/reports/dr for " +
+          "CoP 5.1 reports. Read more at https://github.com/Big-Dig-Data/sashimi",
       };
     },
   });
