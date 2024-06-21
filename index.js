@@ -5,8 +5,10 @@ import { ReportGeneratorR51TR } from "./r51/tr";
 require("dotenv").config();
 import { ReportGeneratorR50TR } from "./r50/tr";
 import { ReportGeneratorR50DR } from "./r50/dr";
-import { parseMonthToDate } from "./lib/dates";
+import { isoDateFormat, parseMonthToDate, startOfMonthStr } from "./lib/dates";
 import { ReportGeneratorR51DR } from "./r51/dr";
+import { addMonths } from "date-fns";
+import endOfMonth from "date-fns/endOfMonth";
 
 const Hapi = require("@hapi/hapi");
 
@@ -25,13 +27,14 @@ function queryToContextObj(query) {
 }
 
 function handleRequest(h, query, generatorClass) {
-  let monthStart = query.begin_date || "2020-01";
+  let monthStart =
+    query.begin_date || startOfMonthStr(addMonths(new Date(), -1));
   let monthEnd = query.end_date || monthStart;
   let context = queryToContextObj(query);
   let generator = new generatorClass(context);
   // some basic checks
   let startDate = parseMonthToDate(monthStart);
-  let endDate = parseMonthToDate(monthEnd);
+  let endDate = endOfMonth(parseMonthToDate(monthEnd));
   if (startDate > endDate) {
     return h
       .response({
