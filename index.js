@@ -1,8 +1,12 @@
 "use strict";
 
+import { ReportGeneratorR51TR } from "./r51/tr";
+
 require("dotenv").config();
 import { ReportGeneratorR50TR } from "./r50/tr";
 import { ReportGeneratorR50DR } from "./r50/dr";
+import { parseMonthToDate } from "./lib/dates";
+import { ReportGeneratorR51DR } from "./r51/dr";
 
 const Hapi = require("@hapi/hapi");
 
@@ -20,12 +24,22 @@ function queryToContextObj(query) {
   };
 }
 
-function handleRequest(query, generatorClass) {
+function handleRequest(h, query, generatorClass) {
   let monthStart = query.begin_date || "2020-01";
   let monthEnd = query.end_date || monthStart;
   let context = queryToContextObj(query);
   let generator = new generatorClass(context);
-  return generator.createReportData(monthStart, monthEnd, context);
+  // some basic checks
+  let startDate = parseMonthToDate(monthStart);
+  let endDate = parseMonthToDate(monthEnd);
+  if (startDate > endDate) {
+    return h
+      .response({
+        message: "Begin date cannot be after end date",
+      })
+      .code(400);
+  }
+  return generator.createReportData(startDate, endDate, context);
 }
 
 const init = async () => {
@@ -34,12 +48,13 @@ const init = async () => {
     host: serverName,
   });
 
+  // COP 5.0
   server.route({
     method: "GET",
     path: "/reports/tr",
     handler: (request, h) => {
-      console.info("New TR request", request.query);
-      return handleRequest(request.query, ReportGeneratorR50TR);
+      console.info("New TR 5.0 request", request.query);
+      return handleRequest(h, request.query, ReportGeneratorR50TR);
     },
   });
 
@@ -47,8 +62,8 @@ const init = async () => {
     method: "GET",
     path: "/reports/dr",
     handler: (request, h) => {
-      console.info("New DR request", request.query);
-      return handleRequest(request.query, ReportGeneratorR50DR);
+      console.info("New DR 5.0 request", request.query);
+      return handleRequest(h, request.query, ReportGeneratorR50DR);
     },
   });
 
@@ -60,6 +75,26 @@ const init = async () => {
     },
   });
 
+  // COP 5.1
+  server.route({
+    method: "GET",
+    path: "/r51/reports/tr",
+    handler: (request, h) => {
+      console.info("New TR 5.1 request", request.query);
+      return handleRequest(h, request.query, ReportGeneratorR51TR);
+    },
+  });
+
+  server.route({
+    method: "GET",
+    path: "/r51/reports/dr",
+    handler: (request, h) => {
+      console.info("New DR 5.1 request", request.query);
+      return handleRequest(h, request.query, ReportGeneratorR51DR);
+    },
+  });
+
+  // Common paths
   server.route({
     method: "GET",
     path: "/",

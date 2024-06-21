@@ -2,12 +2,13 @@ import {
   endOfMonthStr,
   isoDateFormat,
   isoDateTimeFormatT,
+  monthsBetweenDates,
   parseDateTime,
   startOfMonthStr,
 } from "../lib/dates";
 import { randomTitles, randomUsageCount } from "../lib/random";
 
-class BaseReportGeneratorR50 {
+class BaseReportGeneratorR51 {
   reportId = "FOO";
 
   reportName = "Foo Report";
@@ -31,8 +32,9 @@ class BaseReportGeneratorR50 {
       Created_By: "Sashimi fake SUSHI generator",
       Customer_ID: this.context.customerId,
       Report_ID: this.reportId,
-      Release: "5",
+      Release: "5.1",
       Report_Name: this.reportName,
+      Institution_ID: { Proprietary: [`sashimi:${this.context.customerId}`] },
       Institution_Name: `Test Organization ${this.context.customerId}`,
       Report_Filters: [
         {
@@ -48,35 +50,29 @@ class BaseReportGeneratorR50 {
     };
   }
 
-  createPerformance(monthDate, seedArray = [], weight = 1) {
-    let instance = this.metrics
-      .map((metric) => {
-        return {
-          Metric_Type: metric.name,
-          Count: Math.round(
-            weight *
-              metric.weight *
-              randomUsageCount(
-                [isoDateFormat(monthDate), metric.name, ...seedArray],
-                this.context
-              )
-          ),
-        };
-      })
-      .filter((item) => item.Count > 0);
-
-    return [
-      {
-        Period: {
-          Begin_Date: startOfMonthStr(monthDate),
-          End_Date: endOfMonthStr(monthDate),
-        },
-        Instance: instance,
-      },
-    ];
+  createPerformance(monthStart, monthEnd, params, seedArray = [], weight = 1) {
+    let performance = {};
+    this.metrics.forEach((metric) => {
+      performance[metric.name] = {};
+      monthsBetweenDates(monthStart, monthEnd).forEach((monthStr) => {
+        let usage = Math.round(
+          weight *
+            metric.weight *
+            randomUsageCount(
+              [monthStr, metric.name, ...seedArray],
+              this.context
+            )
+        );
+        performance[metric.name][monthStr] = usage + 1; // add 1 to avoid 0 values
+      });
+    });
+    return {
+      ...params,
+      Performance: performance,
+    };
   }
 
-  createOneRecord(title, month, params, weight = 1) {
+  createOneRecord(title, monthStart, monthEnd, titleWeight = 1) {
     /*
      * seedObj is used to provide a seed to the random number generator and thus return the same
      * random data for the same input every time
@@ -86,23 +82,29 @@ class BaseReportGeneratorR50 {
       ...this.recordBase,
       [this.titleAttr]: title.title,
       Platform: this.context.platform,
-      ...params,
     };
     if (record.Item_ID) {
       // create new array to avoid modifying the original
-      record.Item_ID = [];
+      record.Item_ID = {};
       if ("eissn" in title) {
-        record["Item_ID"].push({ Type: "Online_ISSN", Value: title.eissn });
+        record.Item_ID["Online_ISSN"] = title.eissn;
       }
       if ("issn" in title) {
-        record["Item_ID"].push({ Type: "Print_ISSN", Value: title.issn });
+        record.Item_ID["Print_ISSN"] = title.issn;
       }
     }
-    record["Performance"] = this.createPerformance(
-      month,
-      [title.title, ...Object.values(params)],
-      weight
-    );
+    record["Attribute_Performance"] = [];
+    for (let [params, weight] of this.generateParams()) {
+      record["Attribute_Performance"].push(
+        this.createPerformance(
+          monthStart,
+          monthEnd,
+          params,
+          [title.title, ...Object.values(params)],
+          weight * titleWeight
+        )
+      );
+    }
     return record;
   }
 
@@ -110,26 +112,20 @@ class BaseReportGeneratorR50 {
     // should return array of [params, weight] pairs
   }
 
-  createTitleList(monthStart) {
-    return randomTitles(this.context, monthStart);
-  }
-
   createTitleData(monthStart, monthEnd) {
     let records = [];
-    const titleSubset = this.createTitleList(monthStart);
+    const titleSubset = randomTitles(this.context, monthStart);
     let titleIdx = 0;
     let totalTitles = titleSubset.length;
     for (let title of titleSubset) {
-      for (let [params, weight] of this.generateParams()) {
-        records.push(
-          this.createOneRecord(
-            title,
-            monthStart,
-            params,
-            ((totalTitles - titleIdx) / totalTitles) * weight
-          )
-        );
-      }
+      records.push(
+        this.createOneRecord(
+          title,
+          monthStart,
+          monthEnd,
+          (totalTitles - titleIdx) / totalTitles
+        )
+      );
       titleIdx++;
     }
     return records;
@@ -143,4 +139,4 @@ class BaseReportGeneratorR50 {
   }
 }
 
-export { BaseReportGeneratorR50 };
+export { BaseReportGeneratorR51 };
