@@ -15,7 +15,7 @@ class BaseReportGeneratorR51 {
 
   metrics = [];
 
-  reportAttributes = [];
+  reportAttributes = {};
 
   recordBase = {};
 
@@ -36,16 +36,10 @@ class BaseReportGeneratorR51 {
       Report_Name: this.reportName,
       Institution_ID: { Proprietary: [`sashimi:${this.context.customerId}`] },
       Institution_Name: `Test Organization ${this.context.customerId}`,
-      Report_Filters: [
-        {
-          Name: "Begin_Date",
-          Value: isoDateFormat(monthStart),
-        },
-        {
-          Name: "End_Date",
-          Value: isoDateFormat(monthEnd),
-        },
-      ],
+      Report_Filters: {
+        Begin_Date: isoDateFormat(monthStart),
+        End_Date: isoDateFormat(monthEnd),
+      },
       Report_Attributes: this.reportAttributes,
     };
   }

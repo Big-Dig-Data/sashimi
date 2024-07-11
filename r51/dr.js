@@ -21,11 +21,9 @@ class ReportGeneratorR51DR extends BaseReportGeneratorR51 {
     // { name: "Unique_Title_Requests", weight: 0.1 },
   ];
 
-  reportAttributes = [
-    {
-      Attributes_To_Show: ["Access_Method", "Data_Type"],
-    },
-  ];
+  reportAttributes = {
+    Attributes_To_Show: ["Access_Method"],
+  };
 
   titleAttr = "Database";
 

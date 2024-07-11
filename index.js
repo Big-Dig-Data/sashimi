@@ -5,7 +5,7 @@ import { ReportGeneratorR51TR } from "./r51/tr";
 require("dotenv").config();
 import { ReportGeneratorR50TR } from "./r50/tr";
 import { ReportGeneratorR50DR } from "./r50/dr";
-import { isoDateFormat, parseMonthToDate, startOfMonthStr } from "./lib/dates";
+import { parseMonthToDate, startOfMonthStr } from "./lib/dates";
 import { ReportGeneratorR51DR } from "./r51/dr";
 import { addMonths } from "date-fns";
 import endOfMonth from "date-fns/endOfMonth";
@@ -16,7 +16,7 @@ const serverName = process.env.SERVER_NAME || "localhost";
 const port = process.env.PORT || 3000;
 
 function queryToContextObj(query) {
-  let customerId = query.customer_id || "";
+  let customerId = query.customer_id || "foo";
   let requestorId = query.requestor_id || "";
   let platform = query.platform || customerId || "Sashimi test platform";
   return {

@@ -13,11 +13,9 @@ class ReportGeneratorR51TR extends BaseReportGeneratorR51 {
     { name: "No_License", weight: 0.1 },
   ];
 
-  reportAttributes = [
-    {
-      Attributes_To_Show: ["Access_Method", "Access_Type", "Data_Type"],
-    },
-  ];
+  reportAttributes = {
+    Attributes_To_Show: ["Access_Method", "Access_Type"],
+  };
 
   possibleValues = {
     Access_Type: [
