@@ -28,9 +28,8 @@ class BaseReportGeneratorR51 {
   reportHeader(monthStart, monthEnd) {
     let now = new Date();
     return {
-      Created: isoDateTimeFormatT(now),
+      Created: now.toISOString(),
       Created_By: "Sashimi fake SUSHI generator",
-      Customer_ID: this.context.customerId,
       Report_ID: this.reportId,
       Release: "5.1",
       Report_Name: this.reportName,
@@ -41,6 +40,7 @@ class BaseReportGeneratorR51 {
         End_Date: isoDateFormat(monthEnd),
       },
       Report_Attributes: this.reportAttributes,
+      Registry_Record: "",
     };
   }
 
