@@ -80,11 +80,14 @@ class BaseReportGeneratorR51 {
     if (record.Item_ID) {
       // create new array to avoid modifying the original
       record.Item_ID = {};
-      if ("eissn" in title) {
+      if (title.eissn) {
         record.Item_ID["Online_ISSN"] = title.eissn;
       }
-      if ("issn" in title) {
+      if (title.issn) {
         record.Item_ID["Print_ISSN"] = title.issn;
+      }
+      if (title.proprietary) {
+        record.Item_ID["Proprietary"] = title.proprietary;
       }
     }
     record["Attribute_Performance"] = [];
