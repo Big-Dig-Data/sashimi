@@ -129,6 +129,22 @@ class BaseReportGeneratorR51 {
   }
 
   createReportData(monthStart, monthEnd) {
+    if (this.context.config && this.context.config.exception) {
+      // specific return code was requested
+      let header = this.reportHeader(monthStart, monthEnd);
+      return {
+        Report_Header: {
+          ...header,
+          Exceptions: [
+            {
+              // code must be integer
+              Code: parseInt(this.context.config.exception),
+              Message: "Client has made too many requests", //"An exception has occurred",
+            },
+          ],
+        },
+      };
+    }
     return {
       Report_Header: this.reportHeader(monthStart, monthEnd),
       Report_Items: this.createTitleData(monthStart, monthEnd),

@@ -9,6 +9,7 @@ import { parseMonthToDate, startOfMonthStr } from "./lib/dates";
 import { ReportGeneratorR51DR } from "./r51/dr";
 import { addMonths } from "date-fns";
 import endOfMonth from "date-fns/endOfMonth";
+import { parseConfig } from "./lib/config";
 
 const Hapi = require("@hapi/hapi");
 
@@ -19,10 +20,12 @@ function queryToContextObj(query) {
   let customerId = query.customer_id || "foo";
   let requestorId = query.requestor_id || "";
   let platform = query.platform || customerId || "Sashimi test platform";
+  let apiKey = query.api_key || "";
   return {
     customerId,
     requestorId,
     platform,
+    config: parseConfig(apiKey),
   };
 }
 
@@ -31,6 +34,7 @@ function handleRequest(h, query, generatorClass) {
     query.begin_date || startOfMonthStr(addMonths(new Date(), -1));
   let monthEnd = query.end_date || monthStart;
   let context = queryToContextObj(query);
+  console.info("Context", context);
   let generator = new generatorClass(context);
   // some basic checks
   let startDate = parseMonthToDate(monthStart);
@@ -42,7 +46,11 @@ function handleRequest(h, query, generatorClass) {
       })
       .code(400);
   }
-  return generator.createReportData(startDate, endDate, context);
+  let out = generator.createReportData(startDate, endDate);
+  const respCode = context.config.response_code
+    ? parseInt(context.config.response_code)
+    : 200;
+  return h.response(out).code(respCode);
 }
 
 const init = async () => {

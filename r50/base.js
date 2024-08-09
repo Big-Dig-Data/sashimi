@@ -6,6 +6,7 @@ import {
   startOfMonthStr,
 } from "../lib/dates";
 import { randomTitles, randomUsageCount } from "../lib/random";
+import { he } from "date-fns/locale";
 
 class BaseReportGeneratorR50 {
   reportId = "FOO";
@@ -136,6 +137,21 @@ class BaseReportGeneratorR50 {
   }
 
   createReportData(monthStart, monthEnd) {
+    if (this.context.config && this.context.config.code) {
+      // specific return code was requested
+      let header = this.reportHeader(monthStart, monthEnd);
+      return {
+        Report_Header: {
+          ...header,
+          Exceptions: [
+            {
+              Code: this.context.config.code,
+              Message: "Client has made too many requests", // "An exception has occurred",
+            },
+          ],
+        },
+      };
+    }
     return {
       Report_Header: this.reportHeader(monthStart, monthEnd),
       Report_Items: this.createTitleData(monthStart, monthEnd),
