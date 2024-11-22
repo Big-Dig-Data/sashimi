@@ -28,7 +28,7 @@ class BaseReportGeneratorR51 {
   reportHeader(monthStart, monthEnd) {
     let now = new Date();
     return {
-      Created: now.toISOString(),
+      Created: isoDateTimeFormatT(now),
       Created_By: "Sashimi fake SUSHI generator",
       Report_ID: this.reportId,
       Release: "5.1",
