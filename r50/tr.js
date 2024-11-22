@@ -15,10 +15,10 @@ class ReportGeneratorR50TR extends BaseReportGeneratorR50 {
   ];
 
   reportAttributes = [
-    {
-      Name: "Attributes_To_Show",
-      Value: "YOP|Access_Method|Access_Type|Data_Type|Section_Type",
-    },
+    // {
+    //   Name: "Attributes_To_Show",
+    //   Value: "Access_Method|Access_Type|Data_Type|Section_Type",
+    // },
   ];
 
   titleAttr = "Title";

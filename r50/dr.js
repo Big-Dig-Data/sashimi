@@ -22,10 +22,10 @@ class ReportGeneratorR50DR extends BaseReportGeneratorR50 {
   ];
 
   reportAttributes = [
-    {
-      Name: "Attributes_To_Show",
-      Value: "Access_Method|Data_Type",
-    },
+    // {
+    //   Name: "Attributes_To_Show",
+    //   Value: "Access_Method|Data_Type",
+    // },
   ];
 
   titleAttr = "Database";
