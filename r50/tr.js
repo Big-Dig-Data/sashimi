@@ -23,7 +23,18 @@ class ReportGeneratorR50TR extends BaseReportGeneratorR50 {
       weight: 0.8,
       caps: ["Total_Item_Requests", "Unique_Item_Investigations"],
     },
+    {
+      name: "Unique_Title_Investigations",
+      weight: 0.6,
+      caps: ["Unique_Item_Investigations"],
+    },
+    {
+      name: "Unique_Title_Requests",
+      weight: 0.4,
+      caps: ["Unique_Title_Investigations", "Unique_Item_Requests"],
+    },
     { name: "No_License", weight: 0.1 },
+    { name: "Limit_Exceeded", weight: 0.1 },
   ];
 
   reportAttributes = [

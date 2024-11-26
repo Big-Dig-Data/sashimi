@@ -64,7 +64,12 @@ class BaseReportGeneratorR50 {
           )
       );
       if (metric.caps) {
-        count = Math.min(count, ...metric.caps.map((cap) => counts[cap]));
+        let minCap = Math.min(...metric.caps.map((cap) => counts[cap]));
+        // if minCap is non-zero, we should not exceed it, but also not report 0
+        count = Math.min(count, minCap);
+        if (count === 0 && minCap > 0) {
+          count = minCap;
+        }
       }
       if (count > 0) {
         counts[metric.name] = count;
@@ -74,6 +79,8 @@ class BaseReportGeneratorR50 {
       Metric_Type: key,
       Count: value,
     }));
+
+    if (instance.length === 0) return [];
 
     return [
       {
@@ -113,6 +120,7 @@ class BaseReportGeneratorR50 {
       [title.title, ...Object.values(params)],
       weight
     );
+    if (record["Performance"].length === 0) return null;
     return record;
   }
 
@@ -131,14 +139,16 @@ class BaseReportGeneratorR50 {
     let totalTitles = titleSubset.length;
     for (let title of titleSubset) {
       for (let [params, weight] of this.generateParams()) {
-        records.push(
-          this.createOneRecord(
-            title,
-            monthStart,
-            params,
-            ((totalTitles - titleIdx) / totalTitles) * weight
-          )
+        let rec = this.createOneRecord(
+          title,
+          monthStart,
+          params,
+          ((totalTitles - titleIdx) / totalTitles) * weight
         );
+        if (rec) {
+          // rec may be null if no performance data was generated
+          records.push(rec);
+        }
       }
       titleIdx++;
     }

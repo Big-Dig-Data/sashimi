@@ -83,7 +83,24 @@ const init = async () => {
     method: "GET",
     path: "/reports",
     handler: (request, h) => {
-      return { message: "not supported yet, try /reports/tr" };
+      return [
+        {
+          Report_Name: "Title Master Report",
+          Report_ID: "TR",
+          Report_Description:
+            "A customizable report detailing activity at the title level that allows the user to apply filters and select other configuration options for the report.",
+          Path: "/reports/tr",
+          Release: "5",
+        },
+        {
+          Report_Name: "Database Master Report",
+          Report_ID: "DR",
+          Report_Description:
+            "A customizable report detailing activity at the database level that allows the user to apply filters and select other configuration options for the report.",
+          Path: "/reports/dr",
+          Release: "5",
+        },
+      ];
     },
   });
 
