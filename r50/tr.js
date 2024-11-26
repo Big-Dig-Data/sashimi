@@ -8,9 +8,21 @@ class ReportGeneratorR50TR extends BaseReportGeneratorR50 {
 
   metrics = [
     { name: "Total_Item_Investigations", weight: 1.6 },
-    { name: "Unique_Item_Investigations", weight: 1.4 },
-    { name: "Total_Item_Requests", weight: 1 },
-    { name: "Unique_Item_Requests", weight: 0.8 },
+    {
+      name: "Unique_Item_Investigations",
+      weight: 1.4,
+      caps: ["Total_Item_Investigations"],
+    },
+    {
+      name: "Total_Item_Requests",
+      weight: 1,
+      caps: ["Total_Item_Investigations"],
+    },
+    {
+      name: "Unique_Item_Requests",
+      weight: 0.8,
+      caps: ["Total_Item_Requests", "Unique_Item_Investigations"],
+    },
     { name: "No_License", weight: 0.1 },
   ];
 

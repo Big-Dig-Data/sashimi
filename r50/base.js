@@ -27,7 +27,7 @@ class BaseReportGeneratorR50 {
 
   reportHeader(monthStart, monthEnd) {
     let now = new Date();
-    return {
+    let out = {
       Created: isoDateTimeFormatT(now),
       Created_By: "Sashimi fake SUSHI generator",
       Customer_ID: this.context.customerId,
@@ -45,26 +45,35 @@ class BaseReportGeneratorR50 {
           Value: isoDateFormat(monthEnd),
         },
       ],
-      Report_Attributes: this.reportAttributes,
     };
+    if (this.reportAttributes && this.reportAttributes.length > 0) {
+      out["Report_Attributes"] = this.reportAttributes;
+    }
+    return out;
   }
 
   createPerformance(monthDate, seedArray = [], weight = 1) {
-    let instance = this.metrics
-      .map((metric) => {
-        return {
-          Metric_Type: metric.name,
-          Count: Math.round(
-            weight *
-              metric.weight *
-              randomUsageCount(
-                [isoDateFormat(monthDate), metric.name, ...seedArray],
-                this.context
-              )
-          ),
-        };
-      })
-      .filter((item) => item.Count > 0);
+    let counts = {};
+    this.metrics.forEach((metric) => {
+      let count = Math.round(
+        weight *
+          metric.weight *
+          randomUsageCount(
+            [isoDateFormat(monthDate), metric.name, ...seedArray],
+            this.context
+          )
+      );
+      if (metric.caps) {
+        count = Math.min(count, ...metric.caps.map((cap) => counts[cap]));
+      }
+      if (count > 0) {
+        counts[metric.name] = count;
+      }
+    });
+    let instance = Object.entries(counts).map(([key, value]) => ({
+      Metric_Type: key,
+      Count: value,
+    }));
 
     return [
       {

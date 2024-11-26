@@ -25,6 +25,7 @@ function queryToContextObj(query) {
     customerId,
     requestorId,
     platform,
+    attributesToShow: (query.attributes_to_show || "").split("|"),
     config: parseConfig(apiKey),
   };
 }
